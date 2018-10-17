@@ -3,7 +3,9 @@ package com.springboot.demo.controller;
 import com.springboot.demo.base.controller.BaseController;
 import com.springboot.demo.base.utils.RedisConstants;
 import com.springboot.demo.base.utils.RedisUtil;
+import com.springboot.demo.base.utils.SerializeUtil;
 import com.springboot.demo.base.utils.StateParameter;
+import com.springboot.demo.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -37,6 +39,16 @@ public class RedisController extends BaseController {
         Long resExpire = redisUtil.expire("20182018", 60, RedisConstants.datebase1);//设置key过期时间
         logger.info("resExpire="+resExpire);
         String res = redisUtil.get("20182018", RedisConstants.datebase1);
+
+        //测试Redis保存对象
+        User u = new User();
+        u.setAge(24);
+        u.setName("冯绍峰");
+        redisUtil.set("20181017".getBytes(), SerializeUtil.serialize(u),RedisConstants.datebase1);
+        byte[] user = redisUtil.get("20181017".getBytes(),RedisConstants.datebase1);
+        User us = (User) SerializeUtil.unserialize(user);
+        System.out.println("user="+us.toString());
+
         return getModelMap(StateParameter.SUCCESS, res, "执行成功");
     }
 

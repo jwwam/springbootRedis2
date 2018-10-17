@@ -24,3 +24,6 @@ http://localhost:8080/redis/getRedis
 
 #联系方式
 824247231
+
+20181017
+加入Redis保存对象
